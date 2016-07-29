@@ -10,16 +10,9 @@ describe Oystercard do
   describe '#top_up' do
 
     # In order to keep using public transport As a customer I want to add money to my card
-    it { is_expected.to respond_to(:top_up).with(1).argument }
-
     it 'can top up the balance' do
       expect { subject.top_up 1 }.to change{ subject.balance }.by 1
     end
-
-    # it 'can be topped up' do
-    #   subject.top_up(1)
-    #   expect(subject.balance).to eq 1
-    # end
 
     # In order to protect my money from theft or loss As a customer I want a maximum limit (of £90) on my card
     it 'raises an error if the maximum balance in exceeded' do
@@ -33,8 +26,6 @@ describe Oystercard do
   describe '#deduct' do
 
     # In order to pay for my journey As a customer I need my fare deducted from my card
-    it { is_expected.to respond_to(:deduct).with(1).argument }
-
     it "deducts an amount from the balance" do
       subject.top_up(20)
       expect{ subject.deduct 3 }.to change{ subject.balance }.by -3
