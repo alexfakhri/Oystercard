@@ -58,8 +58,15 @@ describe Oystercard do
 
   describe 'minmum balance' do
 
+    # In order to pay for my journey As a customer I need to have the minimum amount (£1) for a single journey.
     it 'will not touch in if balance is below minumum balance' do
       expect{ subject.touch_in }.to raise_error "Insufficient balance to touch in"
+    end
+
+    it 'will be charged the minimum amount on touch out' do
+      subject.top_up(10)
+      subject.touch_in
+      expect{ subject.touch_out }.to change{ subject.balance }.by (-Oystercard::MINIMUM_CHARGE)
     end
 
   end
