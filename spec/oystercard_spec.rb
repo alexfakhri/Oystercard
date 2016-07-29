@@ -7,6 +7,10 @@ describe Oystercard do
     expect(subject.balance).to eq 0
   end
 
+  it 'is not initially in journey' do
+    expect(subject).not_to be_in_journey
+  end
+
   describe '#top_up' do
 
     # In order to keep using public transport As a customer I want to add money to my card
@@ -32,4 +36,23 @@ describe Oystercard do
     end
 
   end
+
+  describe 'customer journey' do
+
+    before { subject.touch_in }
+
+    # In order to get through the barriers. As a customer I need to touch in and out.
+    it 'can touch in' do
+      # subject.touch_in
+      expect(subject).to be_in_journey
+    end
+
+    it 'can touch out' do
+      # subject.touch_in
+      subject.touch_out
+      expect(subject).to_not be_in_journey
+    end
+
+  end
+
 end
