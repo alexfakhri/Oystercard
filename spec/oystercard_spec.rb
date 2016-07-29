@@ -39,18 +39,27 @@ describe Oystercard do
 
   describe 'customer journey' do
 
-    before { subject.touch_in }
+    before do
+      subject.top_up(Oystercard::MAXIMUM_BALANCE)
+      subject.touch_in
+    end
 
     # In order to get through the barriers. As a customer I need to touch in and out.
     it 'can touch in' do
-      # subject.touch_in
       expect(subject).to be_in_journey
     end
 
     it 'can touch out' do
-      # subject.touch_in
       subject.touch_out
       expect(subject).to_not be_in_journey
+    end
+
+  end
+
+  describe 'minmum balance' do
+
+    it 'will not touch in if balance is below minumum balance' do
+      expect{ subject.touch_in }.to raise_error "Insufficient balance to touch in"
     end
 
   end
