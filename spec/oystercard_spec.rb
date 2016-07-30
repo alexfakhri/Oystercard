@@ -5,7 +5,7 @@ describe Oystercard do
   let (:station) { double :station }
   let(:entry_station) { double :station }
   let(:exit_station) { double :station }
-
+  let(:journey) { {entry_station: entry_station, exit_station: exit_station} }
 
   # In order to use public transport As a customer I want money on my card
   it 'has a balance of zero' do
@@ -13,7 +13,7 @@ describe Oystercard do
   end
 
   it 'is not initially in journey' do
-    expect(subject).not_to be_in_journey
+    expect(subject.journeys).to be_empty
   end
 
   describe '#top_up' do
@@ -42,6 +42,10 @@ describe Oystercard do
 
   end
 
+  it 'has an empty list of journeys' do
+    expect(subject.journeys).to be_empty
+  end
+
   describe 'customer journey' do
 
     before do
@@ -56,20 +60,26 @@ describe Oystercard do
 
     it 'can touch out' do
       subject.touch_out(station)
-      expect(subject.exit_station).to_not be nil
+      expect(subject.journeys).to include(:entry_station => station)
     end
 
     # In order to pay for my journey As a customer I need to know where I've travelled from
     it 'stores the entry station' do
-      subject.touch_in(station)
-      expect(subject.entry_station).to eq station
+      subject.touch_in(entry_station)
+      expect(subject.journeys).to include(:entry_station => entry_station)
     end
 
     # In order to know where I have been As a customer I want to see to all my previous trips
     it 'stores the exit station' do
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-      expect(subject.exit_station).to eq exit_station
+      expect(subject.journeys).to include(:exit_station => exit_station)
+    end
+
+    it 'stores a journey' do
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.journeys).to include journey
     end
 
   end
