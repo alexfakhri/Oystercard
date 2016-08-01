@@ -6,10 +6,11 @@ class Journey
 
   def initialize(entry_station: nil)
     @entry_station = entry_station
+    @complete = false
   end
 
   def complete?
-   false
+   @complete
   end
 
   def fare
@@ -19,6 +20,7 @@ class Journey
 
   def exit(station)
     @exit_station = station
+    @complete = true
     self
   end
 

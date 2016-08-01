@@ -40,6 +40,10 @@ describe Journey do
         expect(subject.fare).to eq 1
       end
 
+      it 'knows when a journey is complete' do
+        expect(subject).to be_complete
+      end
+
     end
 
 
