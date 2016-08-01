@@ -8,7 +8,7 @@ describe Journey do
     expect(subject).not_to be_complete
   end
 
-  it 'has a penalty dare by default' do
+  it 'has a penalty fare by default' do
     expect(subject.fare).to eq Journey::PENALTY_FARE
   end
 
@@ -22,6 +22,24 @@ describe Journey do
 
     it 'has an entry station' do
       expect(subject.entry_station).to eq station
+    end
+
+    it 'returns a penalty fare if no exit station given' do
+      expect(subject.fare).to eq Journey::PENALTY_FARE
+    end
+
+    context 'given an exit station' do
+
+      let(:other_station)  { double :other_station }
+
+      before do
+        subject.exit(other_station)
+      end
+
+      it 'calculates a fare' do
+        expect(subject.fare).to eq 1
+      end
+
     end
 
 
